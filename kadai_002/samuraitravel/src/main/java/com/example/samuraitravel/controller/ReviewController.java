@@ -39,10 +39,21 @@ public class ReviewController {
 
 	//レビュー一覧を表示
 	@GetMapping("/review/{id}")
-	public String show(@PathVariable(name = "id") Integer id, @PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable, Model model) {
+	public String show(@PathVariable(name = "id") Integer id, 
+						@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+						@PageableDefault(page = 0, size = 9, sort = "id", direction = Direction.ASC) Pageable pageable, Model model) {
         
+		House house = houseRepository.getReferenceById(id);
+		
         Page<Review> reviewPage = reviewRepository.findByHouseIdOrderByCreatedAtDesc(id, pageable);
 		
+        User user = null; // 初期値をnullに設定
+        if (userDetailsImpl != null) {
+            user = userDetailsImpl.getUser();
+        }
+        
+        model.addAttribute("house", house);  
+        model.addAttribute("user", user); 
         model.addAttribute("reviewPage", reviewPage);    
         return "review/show";
 	}

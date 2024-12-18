@@ -13,4 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	 public Page<Review> findByHouseIdOrderByCreatedAtDesc(Integer houseId, Pageable pageable);
 	 public List<Review> findTop6ByHouseIdOrderByCreatedAtDesc(Integer houseId);
 	 
+	 boolean existsByHouseIdAndUserId(Integer houseId, Integer userId);
+
+	 
 }

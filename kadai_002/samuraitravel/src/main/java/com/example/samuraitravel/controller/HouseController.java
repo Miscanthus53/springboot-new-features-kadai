@@ -89,12 +89,18 @@ public class HouseController {
             user = userDetailsImpl.getUser();
         }
         
+        boolean hasUserReviewed = false;
+        if (user != null) {
+            hasUserReviewed = reviewRepository.existsByHouseIdAndUserId(id, user.getId());
+        }
+        
         List<Review> reviews = reviewRepository.findTop6ByHouseIdOrderByCreatedAtDesc(id);
 
         model.addAttribute("house", house);  
         model.addAttribute("user", user); 
         model.addAttribute("reservationInputForm", new ReservationInputForm());
         model.addAttribute("reviews", reviews);
+        model.addAttribute("hasUserReviewed", hasUserReviewed);
         
         return "houses/show";
     }   

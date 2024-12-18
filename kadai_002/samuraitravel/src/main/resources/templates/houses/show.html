@@ -175,7 +175,7 @@
 						<div class="container mb-5">
 							<h3 class="mb-4 text-center">レビュー</h3>
 							<div sec:authorize="isAuthenticated()" class="mb-4">
-								<div class="d-flex justify-content-center">
+								<div th:if="${!hasUserReviewed}"   class="d-flex justify-content-center">
 									<a th:href="@{/review/post/__${house.getId()}__}"
 										class="btn text-white shadow-sm samuraitravel-btn" style="width: 200px">
 										レビューを投稿する
@@ -186,6 +186,7 @@
 								<!-- レビューリストを繰り返し表示 -->
 								<div th:each="review, iterStat : ${reviews}" class="col-md-6 col-lg-4 mb-4">
 									<div class="card h-100 shadow-sm">
+										
 										<!-- ボタン表示のための条件: ユーザーIDが一致 -->
 										<div sec:authorize="isAuthenticated()"
 											th:if="${review.user != null and user != null and review.user.id == user.id}"
